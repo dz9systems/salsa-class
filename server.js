@@ -8,8 +8,6 @@ const { saveSignup, getSignups } = require('./signup');
 const app = express();
 const PORT = 3000;
 
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,6 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/signup', (req, res) => {
   const { name, email, role } = req.body;
+  console.log('Received signup data:', req.body);
 
   if (!name || !email || !role) {
     return res.status(400).send('Missing name, email, or role');
