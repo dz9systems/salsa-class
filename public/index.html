@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rueda Salsa Class Signup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Come Dance with Us!!!</h1>
+
+    <!-- Class Info -->
+    <div class="class-info">
+      <p><strong>Class:</strong> Cuban Style Salsa (Rueda Casino)</p>
+      <p><strong>Date & Time:</strong> Wednesday, April 30 @ 7:00 PM</p>
+      <p><strong>Location:</strong> Alameda Crunch Fitness Center</p>
+      <p>2247 South Shore, Alameda, CA 94501</p>
+    </div>
+
+    <!-- Video Section -->
+    <div class="media">
+      <video width="100%" controls>
+        <source src="Rueda-Salsa-2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Signup Form -->
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="L">Leader (L)</option>
+        <option value="F">Follower (F)</option>
+      </select>
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <!-- RSVP Button -->
+    <button id="seeRsvpBtn" class="rsvp-button">See Who RSVP'd</button>
+
+    <!-- The Modal -->
+    <div id="rsvpModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>People Who RSVP'd</h2>
+        <ul id="modalSignupList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    const seeRsvpBtn = document.getElementById('seeRsvpBtn');
+    const rsvpModal = document.getElementById('rsvpModal');
+    const closeModal = document.querySelector('.close');
+    const modalSignupList = document.getElementById('modalSignupList');
+
+    async function loadSignups() {
+      const res = await fetch('/signups');
+      const signups = await res.json();
+      modalSignupList.innerHTML = '';
+
+      signups.forEach(({ name, role }) => {
+        const modalLi = document.createElement('li');
+        modalLi.textContent = `${name} (${role === 'L' ? 'L' : 'F'})`;
+        modalSignupList.appendChild(modalLi);
+      });
+    }
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const role = document.getElementById('role').value;
+      if (!name || !role) return;
+
+      await fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, role }),
+      });
+
+      signupForm.reset();
+      await loadSignups();
+    });
+
+    // Show modal
+    seeRsvpBtn.addEventListener('click', async () => {
+      await loadSignups();
+      rsvpModal.style.display = 'block';
+    });
+
+    // Close modal
+    closeModal.addEventListener('click', () => {
+      rsvpModal.style.display = 'none';
+    });
+
+    // Click outside modal closes it
+    window.addEventListener('click', (e) => {
+      if (e.target == rsvpModal) {
+        rsvpModal.style.display = 'none';
+      }
+    });
+
+    // Initial load
+    loadSignups();
+  </script>
+</body>
+</html>
