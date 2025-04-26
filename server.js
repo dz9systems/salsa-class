@@ -49,6 +49,22 @@ app.get('/signups', async (req, res) => {
   }
 });
 
+// DLETE PERSON FROM SIGNUPS
+app.delete('/signups/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'signups.json'), 'utf-8');
+    const signups = JSON.parse(data);
+    const filteredSignups = signups.filter((signup) => signup.email !== email);
+    await fs.writeFile(path.join(__dirname, 'signups.json'), JSON.stringify(filteredSignups, null, 2));
+    res.json({ message: 'Signup deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete signup' });
+  }
+}
+);
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
