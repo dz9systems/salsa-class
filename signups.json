@@ -12,12 +12,6 @@
     "createdAt": "2025-04-25T15:45:10.000Z"
   },
   {
-    "name": "Kisa Konrad",
-    "email": "",
-    "role": "F",
-    "createdAt": "2025-04-25T14:30:05.000Z"
-  },
-  {
     "name": "Jesse J.",
     "email": "",
     "role": "L",
@@ -70,11 +64,5 @@
     "email": "",
     "role": "F",
     "createdAt": "2025-04-16T14:40:25.000Z"
-  },
-  {
-    "name": "Kim M.",
-    "email": "isaiahl@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-26T23:28:53.414Z"
   }
 ]
