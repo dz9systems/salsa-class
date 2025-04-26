@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rueda Salsa Class Signup</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
-
   <link rel="stylesheet" href="style.css" />
+
+  <!-- import js from signup -->
+
 </head>
 
 <body>
@@ -33,6 +34,7 @@
     <!-- Signup Form -->
     <form id="signupForm">
       <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email"  required/>
       <select id="role" required>
         <option value="">Select Role</option>
         <option value="L">Leader (L)</option>
@@ -40,6 +42,9 @@
       </select>
       <button type="submit">Sign Up</button>
     </form>
+
+    <!-- Notification Area -->
+    <div id="notification" style="margin-top:10px; color: green; font-weight:bold;"></div>
 
     <!-- RSVP Button -->
     <button id="seeRsvpBtn" class="rsvp-button">See Who RSVP'd</button>
@@ -54,18 +59,22 @@
     </div>
   </div>
 
+  <!-- <script src="/signup.js"></script> -->
+
   <script>
+    console.log('SCRIPT IN index.HTML');
     const signupForm = document.getElementById('signupForm');
     const seeRsvpBtn = document.getElementById('seeRsvpBtn');
     const rsvpModal = document.getElementById('rsvpModal');
     const closeModal = document.querySelector('.close');
     const modalSignupList = document.getElementById('modalSignupList');
+    const notification = document.getElementById('notification');
 
+    // Fetch the list of signups from the server
     async function loadSignups() {
       const res = await fetch('/signups');
       const signups = await res.json();
       modalSignupList.innerHTML = '';
-
       signups.forEach(({ name, role }) => {
         const modalLi = document.createElement('li');
         modalLi.textContent = `${name} (${role === 'L' ? 'L' : 'F'})`;
@@ -73,42 +82,62 @@
       });
     }
 
+    // Handle the form submission for signups
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
       const role = document.getElementById('role').value;
-      if (!name || !role) return;
 
-      await fetch('/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, role }),
-      });
+      if (!name || !role) {
+        notification.innerText = 'Name and Role are required!';
+        return;
+      }
 
-      signupForm.reset();
-      await loadSignups();
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, role }),
+        });
+        
+        const data = await response.json();
+        console.log('Response:', data);
+
+        if (data.status) {
+          notification.innerText = 'Signed up successfully! Check RSVP list.';
+          signupForm.reset();
+          await loadSignups();
+        } else {
+          notification.innerText = data.message || 'Signup failed.';
+        }
+      } catch (error) {
+        notification.innerText = 'Something went wrong.';
+      }
     });
 
-    // Show modal
+    // Open RSVP modal
     seeRsvpBtn.addEventListener('click', async () => {
       await loadSignups();
       rsvpModal.style.display = 'block';
     });
 
-    // Close modal
+    // Close RSVP modal
     closeModal.addEventListener('click', () => {
       rsvpModal.style.display = 'none';
     });
 
-    // Click outside modal closes it
+    // Close RSVP modal if clicked outside of it
     window.addEventListener('click', (e) => {
       if (e.target == rsvpModal) {
         rsvpModal.style.display = 'none';
       }
     });
 
-    // Initial load
+    // Initial load of signups
     loadSignups();
   </script>
+
 </body>
 </html>

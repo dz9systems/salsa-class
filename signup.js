@@ -1,41 +1,40 @@
-// signup.js
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('signup-form');
-  const signupList = document.getElementById('signup-list');
+const fs = require('fs');
+const path = require('path');
+const { sendEmailToZapier } = require('./sendToZapier');
 
-  form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const role = document.getElementById('role').value;
+// Load signups
+const signupsPath = path.join(__dirname, 'signups.json');
 
-      if (!name || !role) {
-          alert('Please enter your name and select a role.');
-          return;
-      }
+function getSignups() {
+  if (!fs.existsSync(signupsPath)) {
+    return [];
+  }
+  const data = fs.readFileSync(signupsPath, 'utf-8');
+  return JSON.parse(data);
+}
 
-      await fetch('/signup', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ name, role })
-      });
+function saveSignup(signup) {
+  // Check if the email is provided
+  if (!signup.email) {
+    return {status: false,  message:'Email is required',data:null};
 
-      form.reset();
-      fetchSignups(); // refresh the list
-  });
-
-  async function fetchSignups() {
-      const res = await fetch('/signups');
-      const signups = await res.json();
-
-      signupList.innerHTML = '';
-      signups.forEach(user => {
-          const li = document.createElement('li');
-          li.textContent = `${user.name} (${user.role === 'lead' ? 'L' : 'F'})`;
-          signupList.appendChild(li);
-      });
   }
 
-  fetchSignups(); // load initial list
-});
+  // Check if the email already exists in the list
+  const signups = getSignups();
+  const existingSignup = signups.find(existing => existing.email === signup.email);
+  if (existingSignup) {
+    return {status: false, message:'This email has already been used for signup',data:null};
+  }
+
+  // Add the signup to the list and save it
+  signup.createdAt = new Date().toISOString(); // Adding a timestamp for the new signup
+  signups.push(signup);
+  fs.writeFileSync(signupsPath, JSON.stringify(signups, null, 2));
+
+  // Send the email to Zapier after saving
+  sendEmailToZapier(signup);
+  return {status: true, message:'Signup successful', data: signup};
+}
+
+module.exports = { getSignups, saveSignup };

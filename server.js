@@ -1,50 +1,54 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const fs = require('fs/promises');
+const bodyParser = require('body-parser');
+const { saveSignup, getSignups } = require('./signup');
 
 const app = express();
 const PORT = 3000;
 
-const signupsFile = path.join(__dirname, 'signups.json');
 
-// Middleware to parse JSON
-app.use(express.json());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Tell Express to serve files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to get all signups
+app.post('/signup', (req, res) => {
+  const { name, email, role } = req.body;
+
+  if (!name || !email || !role) {
+    return res.status(400).send('Missing name, email, or role');
+  }
+
+  const newSignup = { name, email, role };
+  const isSignedUp = saveSignup(newSignup);
+  console.log('isSignedUp', isSignedUp);
+  if (isSignedUp.status) {
+     return res.json({ status:isSignedUp.status,message: 'Signup successful', data: newSignup });
+  } else {
+    return res.json(isSignedUp);
+  }
+
+});
+
+// GET route to fetch the list of signups
 app.get('/signups', async (req, res) => {
   try {
-    const data = await fs.readFile(signupsFile, 'utf8');
-    res.json(JSON.parse(data));
+    const data = await fs.readFile(path.join(__dirname, 'signups.json'), 'utf-8');
+    const signups = JSON.parse(data);
+
+    // Sort by createdAt field, latest first
+    signups.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json(signups);
   } catch (err) {
-    res.json([]); // Empty array if no file yet
+    res.status(500).json({ message: 'Failed to read signups data' });
   }
 });
 
-// Route to post a new signup
-app.post('/signup', async (req, res) => {
-  const { name, role } = req.body;
-  if (!name || !role) {
-    return res.status(400).send('Name and role are required');
-  }
-
-  let signups = [];
-  try {
-    const data = await fs.readFile(signupsFile, 'utf8');
-    signups = JSON.parse(data);
-  } catch (err) {
-    // No signups yet, start fresh
-  }
-
-  signups.push({ name, role });
-
-  await fs.writeFile(signupsFile, JSON.stringify(signups, null, 2));
-  res.status(201).send('Signed up!');
-});
-
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
