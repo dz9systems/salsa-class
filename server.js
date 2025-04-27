@@ -17,11 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/signup', (req, res) => {
   const { name, email, role } = req.body;
   console.log('Received signup data:', req.body);
-
-  if (!name || !email || !role) {
-    return res.status(400).send('Missing name, email, or role');
-  }
-
   const newSignup = { name, email, role };
   const isSignedUp = saveSignup(newSignup);
   console.log('isSignedUp', isSignedUp);
