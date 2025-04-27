@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs/promises');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { saveSignup, getSignups } = require('./signup');
 
 const app = express();
@@ -10,6 +11,11 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// cors
+app.use(cors({
+  origin: '*', // Allow all origins
+}));
 
 // Tell Express to serve files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
