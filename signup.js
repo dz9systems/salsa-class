@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const { sendEmailToZapier } = require('./sendToZapier');
 
 // Load signups
@@ -36,11 +37,8 @@ async function saveSignup(signup) {
 
     // Send the email to Zapier after saving
     const zap_url = 'https://hooks.zapier.com/hooks/catch/14130019/2p6fbin/';
-    const response = await axios.post(zap_url, signup);
-    const successEmail = await sendEmailToZapier(signup);
-
-    console.log('signup after write to file::', signup);
-    console.log('sendEmailToZapier(signup);::', successEmail);
+    const {data:zapResponse} = await axios.post(zap_url, signup);
+    console.log('zapResponse::', zapResponse);
 
     return { status: true, message: 'Signup successful', data: signup };
   } catch (error) {
