@@ -13,7 +13,7 @@ function getSignups() {
   return JSON.parse(data);
 }
 
-function saveSignup(signup) {
+async function saveSignup(signup) {
   // Check if the email is provided
   if (!signup.email) {
     return {status: false,  message:'Email is required',data:null};
@@ -30,14 +30,14 @@ function saveSignup(signup) {
   // Add the signup to the list and save it
   signup.createdAt = new Date().toISOString(); // Adding a timestamp for the new signup
   signups.push(signup);
-  
+
   // Save the updated signups list to the file
   fs.writeFileSync(signupsPath, JSON.stringify(signups, null, 2));
 
   // Send the email to Zapier after saving
-  sendEmailToZapier(signup);
+  const successEmail = await sendEmailToZapier(signup);
   console.log('signup after write to file::', signup);
-  console.log('sendEmailToZapier(signup);::', sendEmailToZapier(signup));
+  console.log('sendEmailToZapier(signup);::', successEmail);
   return {status: true, message:'Signup successful', data: signup};
 }
 

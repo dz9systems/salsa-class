@@ -5,7 +5,8 @@ const axios = require('axios');
 async function sendEmailToZapier(data) {
   console.log('Sending data to Zapier...', data);
   try {
-    const response = await axios.post('https://hooks.zapier.com/hooks/catch/14130019/2p6fbin/', data);
+    let zap_url= 'https://hooks.zapier.com/hooks/catch/14130019/2p6fbin/'
+    const response = await axios.post(zap_url, data);
     console.log('✅ Successfully sent to Zapier:', response.data);
     return response.data;
   } catch (error) {

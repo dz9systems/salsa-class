@@ -1,5 +1,53 @@
 [
   {
+    "name": "Kelly Lu",
+    "email": "kelly.d.lu@gmail.com",
+    "role": "F",
+    "createdAt": "2025-04-27T15:52:12.165Z"
+  },
+  {
+    "name": "Sophia Du",
+    "email": "sophiacdu@icloud.com",
+    "role": "L",
+    "createdAt": "2025-04-27T15:39:28.596Z"
+  },
+  {
+    "name": "Stephanie Del Rosario",
+    "email": "steffi94501@yahoo.com",
+    "role": "F",
+    "createdAt": "2025-04-27T15:37:32.843Z"
+  },
+  {
+    "name": "Li",
+    "email": "trinity1507@yahoo.com",
+    "role": "F",
+    "createdAt": "2025-04-27T15:33:21.465Z"
+  },
+  {
+    "name": "Rose Lei",
+    "email": "Rlei99@gmail.com",
+    "role": "F",
+    "createdAt": "2025-04-27T15:25:44.499Z"
+  },
+  {
+    "name": "Rym Kammoun",
+    "email": "reemakammoun@hotmail.com",
+    "role": "F",
+    "createdAt": "2025-04-27T15:18:34.716Z"
+  },
+  {
+    "name": "Jose Rodriguez",
+    "email": "jlr1995@gmail.com",
+    "role": "L",
+    "createdAt": "2025-04-27T15:16:52.499Z"
+  },
+  {
+    "name": "Anit",
+    "email": "anitadf11@yahoo.com",
+    "role": "F",
+    "createdAt": "2025-04-27T14:54:37.389Z"
+  },
+  {
     "name": "Sandra Badillo",
     "email": "sandrabadillomakeup@gmail.com",
     "role": "F",
@@ -12,26 +60,14 @@
     "createdAt": "2025-04-25T15:45:10.000Z"
   },
   {
-    "name": "Jesse J.",
-    "email": "",
-    "role": "L",
-    "createdAt": "2025-04-24T18:00:20.000Z"
-  },
-  {
-    "name": "Kylie M.",
-    "email": "",
-    "role": "F",
-    "createdAt": "2025-04-23T10:15:45.000Z"
-  },
-  {
     "name": "Lelani R.",
-    "email": "",
+    "email": "leilanilawson2013@gmail.com",
     "role": "F",
     "createdAt": "2025-04-22T08:50:00.000Z"
   },
   {
     "name": "Zeil L.",
-    "email": "",
+    "email": "lovekennzeil@gmail.com",
     "role": "L",
     "createdAt": "2025-04-21T16:25:35.000Z"
   },
@@ -43,7 +79,7 @@
   },
   {
     "name": "Thahn T.",
-    "email": "",
+    "email": "thanhhtran7@icloud.com",
     "role": "L",
     "createdAt": "2025-04-19T12:35:55.000Z"
   },
@@ -55,13 +91,13 @@
   },
   {
     "name": "Dejon Joy",
-    "email": "",
+    "email": "dejontamani@gmail.com",
     "role": "L",
     "createdAt": "2025-04-17T17:00:50.000Z"
   },
   {
     "name": "Kyana M.",
-    "email": "",
+    "email": "kyana.moghadam@gmail.com",
     "role": "F",
     "createdAt": "2025-04-16T14:40:25.000Z"
   }
