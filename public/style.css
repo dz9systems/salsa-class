@@ -57,9 +57,12 @@ button:hover {
   background-color: #ff1a1a;
 }
 
+#seeRsvpBtn {
+margin-top:0rem;
+}
+
 #seeRsvpBtn:hover{
-  background-color: black
-  ;
+  background-color: black;
 }
 
 ul {
