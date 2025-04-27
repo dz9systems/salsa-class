@@ -30,8 +30,9 @@ function saveSignup(signup) {
   // Add the signup to the list and save it
   signup.createdAt = new Date().toISOString(); // Adding a timestamp for the new signup
   signups.push(signup);
+  console.log('signups', signups);
   fs.writeFileSync(signupsPath, JSON.stringify(signups, null, 2));
-
+  console.log('signups after write to file', signups);
   // Send the email to Zapier after saving
   sendEmailToZapier(signup);
   return {status: true, message:'Signup successful', data: signup};

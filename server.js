@@ -17,8 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/signup', (req, res) => {
   const { name, email, role } = req.body;
   console.log('Received signup data:', req.body);
-  const newSignup = { name, email, role };
-  const isSignedUp = saveSignup(newSignup);
+  // const newSignup = { name, email, role };
+  const isSignedUp = saveSignup(req.body);
   console.log('isSignedUp', isSignedUp);
   if (isSignedUp.status) {
      return res.json({ status:isSignedUp.status,message: 'Signup successful', data: newSignup });
