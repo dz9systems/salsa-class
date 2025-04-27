@@ -4,7 +4,7 @@ body {
   background: #f7f7f7;
   margin: 0;
   padding: 20px;
-  background-image: url('crunch-logo.png');
+  background-image: url('assets/crunch-logo.png');
   /* repeat */
 
 }
@@ -73,6 +73,8 @@ ul {
 li {
   padding: 8px;
   background: #eee;
+  background-color: rgb(239 208 237);
+  background-color: rgb(208 216 239);
   margin-top: 5px;
   border-radius: 4px;
   font-size: 18px;
