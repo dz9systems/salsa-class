@@ -30,10 +30,10 @@ app.post('/signup', async (req, res) => {
     const isSignedUp = await saveSignup(newSignup); // add await here since saveSignup is async
     console.log('isSignedUp', isSignedUp);
 
-    if (newSignup.email && newSignup.name) {
-      return res.json({ status: isSignedUp.status, message: 'Signup successful', data: newSignup });
+    if (newSignup.email) {
+      return res.json({ status: true, message: 'Signup successful', data: newSignup });
     } else {
-      return res.json(isSignedUp);
+      return res.json({ status: false, message: 'Signup NOT Successful', data: newSignup });
     }
   } catch (error) {
     console.error('Error in /signup route:', error);
