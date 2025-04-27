@@ -5,6 +5,7 @@ const fs = require('fs/promises');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { saveSignup, getSignups } = require('./signup');
+const { sendEmailToZapier } = require('./sendToZapier');
 
 const app = express();
 const PORT = 3000;
@@ -20,19 +21,26 @@ app.use(cors({
 // Tell Express to serve files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/signup', (req, res) => {
-  const { name, email, role } = req.body;
-  console.log('Received signup data:', req.body);
-  // const newSignup = { name, email, role };
-  const isSignedUp = saveSignup(req.body);
-  console.log('isSignedUp', isSignedUp);
-  if (isSignedUp.status) {
-     return res.json({ status:isSignedUp.status,message: 'Signup successful', data: newSignup });
-  } else {
-    return res.json(isSignedUp);
-  }
+app.post('/signup', async (req, res) => {
+  try {
+    const { name, email, role } = req.body;
+    console.log('Received signup data:', req.body);
 
+    const newSignup = { name, email, role }; // restoring your newSignup object
+    const isSignedUp = await saveSignup(newSignup); // add await here since saveSignup is async
+    console.log('isSignedUp', isSignedUp);
+
+    if (newSignup.email && newSignup.name) {
+      return res.json({ status: isSignedUp.status, message: 'Signup successful', data: newSignup });
+    } else {
+      return res.json(isSignedUp);
+    }
+  } catch (error) {
+    console.error('Error in /signup route:', error);
+    return res.status(500).json({ status: false, message: 'Internal Server Error', data: null });
+  }
 });
+
 
 // GET route to fetch the list of signups
 app.get('/signups', async (req, res) => {
@@ -64,6 +72,22 @@ app.delete('/signups/:email', async (req, res) => {
   }
 }
 );
+
+
+// SEND GROUP EMAIL TO ZAPIER
+app.post('/sendGroupEmail', async (req, res) => {
+  try {
+     const signups = req.body;
+     console.log('Received signups for group email:', signups);
+    // Send email to each signup
+    for (const signup of signups) {
+        sendEmailToZapier(signup);
+    }
+    res.json({ message: 'Emails sent successfully', data:req.body  });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to send emails'});
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

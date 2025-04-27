@@ -101,7 +101,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, role }),
         });
-        
+
         const data = await response.json();
         console.log('Response:', data);
 
@@ -113,7 +113,7 @@
           notification.innerText = data.message || 'Signup failed.';
         }
       } catch (error) {
-        notification.innerText = 'Something went wrong.';
+        notification.innerText = `Something went wrong`;
       }
     });
 
