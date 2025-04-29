@@ -81,6 +81,36 @@ app.get('/signups', async (req, res) => {
   }
 });
 
+// GET WAITING LIST
+app.get('/waitingList', async (req, res) => {
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'waitingList.json'), 'utf-8');
+    const waitingList = JSON.parse(data);
+
+    // Sort by createdAt field, latest first
+    waitingList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json(waitingList);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to read waiting list data' });
+  }
+});
+
+// DELETE WAITLIST
+app.delete('/waitingList/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'waitingList.json'), 'utf-8');
+    const waitingList = JSON.parse(data);
+    const filteredWaitingList = waitingList.filter((signup) => signup.email !== email);
+    await fs.writeFile(path.join(__dirname, 'waitingList.json'), JSON.stringify(filteredWaitingList, null, 2));
+    res.json({ message: 'Waiting list signup deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete waiting list signup' });
+  }
+});
+
 // DLETE PERSON FROM SIGNUPS
 app.delete('/signups/:email', async (req, res) => {
   const { email } = req.params;

@@ -39,7 +39,9 @@ async function saveSignup(signup) {
     fs.writeFileSync(signupsPath, JSON.stringify(signups, null, 2));
 
     // Send the email to Zapier after saving
-    const ZAP_SIGNUP_URL = process.evn.ZAP_SIGNUP_URL;
+    const ZAP_SIGNUP_URL = process.env.ZAP_SIGNUP_URL;
+    console.log('ZAP_SIGNUP_URL...', ZAP_SIGNUP_URL);
+
     const {data:zapResponse} = await axios.post(ZAP_SIGNUP_URL, signup);
     console.log('zapResponse::', zapResponse);
 

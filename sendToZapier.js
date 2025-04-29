@@ -7,7 +7,7 @@ dotenv.config();
 async function sendEmailToZapier(data) {
   console.log('Sending data to Zapier...', data);
   try {
-    const ZAP_SIGNUP_URL = process.evn.ZAP_SIGNUP_URL;
+    const ZAP_SIGNUP_URL = process.env.ZAP_SIGNUP_URL;
     const response = await axios.post(ZAP_SIGNUP_URL, data);
     console.log('✅ Successfully sent to Zapier:', response.data);
     return response.data;
