@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const { sendEmailToZapier } = require('./sendToZapier');
+dotenv = require('dotenv');
+dotenv.config();
+
 
 // Load signups
 const signupsPath = path.join(__dirname, 'signups.json');
@@ -36,8 +39,8 @@ async function saveSignup(signup) {
     fs.writeFileSync(signupsPath, JSON.stringify(signups, null, 2));
 
     // Send the email to Zapier after saving
-    const zap_url = 'https://hooks.zapier.com/hooks/catch/14130019/2p6fbin/';
-    const {data:zapResponse} = await axios.post(zap_url, signup);
+    const ZAP_SIGNUP_URL = process.evn.ZAP_SIGNUP_URL;
+    const {data:zapResponse} = await axios.post(ZAP_SIGNUP_URL, signup);
     console.log('zapResponse::', zapResponse);
 
     return { status: true, message: 'Signup successful', data: signup };

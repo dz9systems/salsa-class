@@ -1,12 +1,14 @@
 // sendToZapier.js
 const axios = require('axios');
+dotenv = require('dotenv');
+dotenv.config();
 
 // Function to send email to Zapier
 async function sendEmailToZapier(data) {
   console.log('Sending data to Zapier...', data);
   try {
-    let zap_url= 'https://hooks.zapier.com/hooks/catch/14130019/2p6fbin/'
-    const response = await axios.post(zap_url, data);
+    const ZAP_SIGNUP_URL = process.evn.ZAP_SIGNUP_URL;
+    const response = await axios.post(ZAP_SIGNUP_URL, data);
     console.log('✅ Successfully sent to Zapier:', response.data);
     return response.data;
   } catch (error) {

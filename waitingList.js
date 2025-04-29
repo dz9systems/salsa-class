@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+dotenv = require('dotenv');
+dotenv.config();
 
 // SAVE TO WATING LIST waitingList.json
 async function saveWaitingList(wl_signup) {
@@ -32,8 +34,8 @@ async function saveWaitingList(wl_signup) {
     fs.writeFileSync(waitingListPath, JSON.stringify(waitingList, null, 2));
 
     // Send the email to Zapier after saving
-    const zap_url = 'https://hooks.zapier.com/hooks/catch/14130019/2psq6o0/';
-    const { data: zapResponse } = await axios.post(zap_url, wl_signup);
+    const ZAP_WAITLIST_URL= process.evn.ZAP_WAITLIST_URL;
+    const { data: zapResponse } = await axios.post(ZAP_WAITLIST_URL, wl_signup);
     console.log('zapResponse::', zapResponse);
 
     return { status: true, message: 'Waiting list signup successful', data: wl_signup };
