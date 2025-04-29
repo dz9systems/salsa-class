@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { saveSignup, getSignups } = require('./signup');
 const { sendEmailToZapier } = require('./sendToZapier');
+const { saveWaitingList } = require('./waitingList'); // Import the saveWaitingList function
 
 const app = express();
 const PORT = 3000;
@@ -21,6 +22,8 @@ app.use(cors({
 // Tell Express to serve files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// SEND SIGNUP DATA TO SIGNUPS.JSON AND ZAPIER
 app.post('/signup', async (req, res) => {
   try {
     const { name, email, role } = req.body;
@@ -37,6 +40,27 @@ app.post('/signup', async (req, res) => {
     }
   } catch (error) {
     console.error('Error in /signup route:', error);
+    return res.status(500).json({ status: false, message: 'Internal Server Error', data: null });
+  }
+});
+
+// SEND WAITING LIST DATA TO WAITINGLIST.JSON AND ZAPIER
+app.post('/waitingList', async (req, res) => {
+  try {
+    const { name, email, role } = req.body;
+    console.log('Received waiting list data:', req.body);
+
+    const newWaitingListSignup = { name, email, role };
+    const isSignedUp = await saveWaitingList(newWaitingListSignup); // add await here since saveSignup is async
+    console.log('isSignedUp', isSignedUp);
+
+    if (newWaitingListSignup.email) {
+      return res.json({ status: true, message: 'Waiting list signup successful', data: newWaitingListSignup });
+    } else {
+      return res.json({ status: false, message: 'Waiting list signup NOT Successful', data: newWaitingListSignup });
+    }
+  } catch (error) {
+    console.error('Error in /waitingList route:', error);
     return res.status(500).json({ status: false, message: 'Internal Server Error', data: null });
   }
 });

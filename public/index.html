@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,13 +35,13 @@
     <!-- Signup Form -->
     <form id="signupForm">
       <input type="text" id="name" placeholder="Your Name" required />
-      <input type="email" id="email" placeholder="Your Email"  required/>
+      <input type="email" id="email" placeholder="Your Email" required />
       <select id="role" required>
         <option value="">Select Role</option>
         <option value="L">Leader (L)</option>
         <option value="F">Follower (F)</option>
       </select>
-      <button type="submit">Sign Up</button>
+      <button type="submit" id="formBtn">Sign Up</button>
     </form>
     <!-- Notification Area -->
     <div id="notification" style="margin-top:10px; color: green; font-weight:bold;"></div>
@@ -73,39 +74,88 @@
     const rsvpHeader = document.querySelector('.rsvp-title');
     // rsvpHeader.appendChild(rsvpCount);
     rsvpHeader.insertBefore(rsvpCount, rsvpHeader.firstChild);
-   
 
-    // Update the RSVP count
+
+
+    let isWaitlist = false;
+    let leaderCount = 0;
+    let followerCount = 0;
+
+    const roleSelect = document.getElementById('role');
+    const formBtn = document.getElementById('formBtn');
+
+    // Update the RSVP counts and store them
     async function updateRsvpCount() {
       const res = await fetch('/signups');
       const signups = await res.json();
       rsvpCount.textContent = `(${signups.length})`;
+
+      // Update counts
+
+
+      // Optionally re-check button state if a role is already selected
+      if (roleSelect.value) {
+        updateButtonState(roleSelect.value);
+      }
     }
 
+    // Logic to update the button
+    function updateButtonState(selectedRole) {
+      const roleFull =
+        (selectedRole === 'L' && leaderCount >= 20) ||
+        (selectedRole === 'F' && followerCount >= 20);
 
-// Fetch the list of signups from the server
-async function loadSignups() {
-  const res = await fetch('/signups');
-  const signups = await res.json();
-  modalSignupList.innerHTML = '';
-  signups.forEach(({ name, role }) => {
-    const modalLi = document.createElement('li');
-    modalLi.textContent = `${name} (${role === 'L' ? 'L' : 'F'})`;
-    // Set background color based on role
-    if (role === 'L') {
-      modalLi.style.backgroundColor = 'rgb(151 173 233)';
-    } else if (role === 'F') {
-      modalLi.style.backgroundColor = 'rgb(235 175 231)';
+      const bothFull = leaderCount >= 20 && followerCount >= 20;
+
+      if (roleFull || bothFull) {
+        formBtn.textContent = 'Join Waitlist';
+        formBtn.classList.add('waitlist');
+        formBtn.style.backgroundColor = 'green';
+        isWaitlist = true;
+      } else {
+        formBtn.textContent = 'Sign Up';
+        formBtn.classList.remove('waitlist');
+        formBtn.style.backgroundColor = ''; // default
+        isWaitlist = false;
+      }
     }
-    modalLi.style.padding = '8px';
-    modalLi.style.marginBottom = '4px';
-    modalLi.style.borderRadius = '6px';
-    modalSignupList.appendChild(modalLi);
-    updateRsvpCount();
-  });
-}
+
+    // Listen for role selection changes
+    roleSelect.addEventListener('change', (e) => {
+      const selectedRole = e.target.value;
+      if (selectedRole) {
+        updateButtonState(selectedRole);
+      }
+    });
 
 
+
+
+    // Fetch the list of signups from the server
+    async function loadSignups() {
+      const res = await fetch('/signups');
+      const signups = await res.json();
+      leaderCount = signups.filter(s => s.role === 'L').length;
+      followerCount = signups.filter(s => s.role === 'F').length;
+      console.log('leaderCount:', leaderCount);
+      console.log('followerCount:', followerCount);
+      modalSignupList.innerHTML = '';
+      signups.forEach(({ name, role }) => {
+        const modalLi = document.createElement('li');
+        modalLi.textContent = `${name} (${role === 'L' ? 'L' : 'F'})`;
+        // Set background color based on role
+        if (role === 'L') {
+          modalLi.style.backgroundColor = 'rgb(151 173 233)';
+        } else if (role === 'F') {
+          modalLi.style.backgroundColor = 'rgb(235 175 231)';
+        }
+        modalLi.style.padding = '8px';
+        modalLi.style.marginBottom = '4px';
+        modalLi.style.borderRadius = '6px';
+        modalSignupList.appendChild(modalLi);
+        updateRsvpCount();
+      });
+    }
     // Handle the form submission for signups
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -119,8 +169,10 @@ async function loadSignups() {
         return;
       }
 
+      console.log('Form submitted:', isWaitlist);
+
       try {
-        const response = await fetch('/signup', {
+        const response = await fetch(isWaitlist ? '/waitingList' : '/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, role }),
@@ -130,7 +182,9 @@ async function loadSignups() {
         console.log('Response:', data);
 
         if (data) {
-          notification.innerText = 'Signed up successfully! Check RSVP list.';
+          notification.innerText = isWaitlist
+            ? "You've been added to waitlist! You’ll be notified as soon as a spot opens up."
+            : 'Signed up successfully! Check RSVP list.';
           signupForm.reset();
           await loadSignups();
         } else {
@@ -140,7 +194,6 @@ async function loadSignups() {
         notification.innerText = `Something went wrong`;
       }
     });
-
 
 
     // Open RSVP modal
@@ -161,9 +214,11 @@ async function loadSignups() {
       }
     });
 
-    // Initial load of signups
-    loadSignups();
+  // Initial load of signups
+   loadSignups();
+
   </script>
 
 </body>
+
 </html>
