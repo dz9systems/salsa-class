@@ -50,7 +50,7 @@
     <div id="rsvpModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>People Who RSVP'd</h2>
+        <h2 class="rsvp-title">People Who RSVP'd</h2>
         <ul id="modalSignupList"></ul>
       </div>
     </div>
@@ -67,8 +67,23 @@
     const modalSignupList = document.getElementById('modalSignupList');
     const notification = document.getElementById('notification');
 
-    // Fetch the list of signups from the server
-   // Fetch the list of signups from the server
+    // Append number of rsvps to  <h1>People Who RSVP'd</h1>
+    const rsvpCount = document.createElement('span');
+    rsvpCount.textContent = '(0)';
+    const rsvpHeader = document.querySelector('.rsvp-title');
+    // rsvpHeader.appendChild(rsvpCount);
+    rsvpHeader.insertBefore(rsvpCount, rsvpHeader.firstChild);
+   
+
+    // Update the RSVP count
+    async function updateRsvpCount() {
+      const res = await fetch('/signups');
+      const signups = await res.json();
+      rsvpCount.textContent = `(${signups.length})`;
+    }
+
+
+// Fetch the list of signups from the server
 async function loadSignups() {
   const res = await fetch('/signups');
   const signups = await res.json();
@@ -86,6 +101,7 @@ async function loadSignups() {
     modalLi.style.marginBottom = '4px';
     modalLi.style.borderRadius = '6px';
     modalSignupList.appendChild(modalLi);
+    updateRsvpCount();
   });
 }
 
@@ -124,6 +140,8 @@ async function loadSignups() {
         notification.innerText = `Something went wrong`;
       }
     });
+
+
 
     // Open RSVP modal
     seeRsvpBtn.addEventListener('click', async () => {

@@ -23,6 +23,20 @@ h2 {
   text-align: center;
 }
 
+.rsvp-title {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.rsvp-title span {
+  font-size :0.8em;
+  color :#4108ebd6;
+  color: #ccc0ef;
+  font-weight: 500;
+  margin-right:0.3rem;
+}
+
 .rsvp {
   margin-top: 3rem;
 }
@@ -58,10 +72,10 @@ button:hover {
 }
 
 #seeRsvpBtn {
-margin-top:0rem;
+  margin-top: 0rem;
 }
 
-#seeRsvpBtn:hover{
+#seeRsvpBtn:hover {
   background-color: black;
 }
 
