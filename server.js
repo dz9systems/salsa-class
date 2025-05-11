@@ -5,8 +5,9 @@ const fs = require('fs/promises');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { saveSignup, getSignups } = require('./signup');
-const { sendEmailToZapier } = require('./sendToZapier');
-const { saveWaitingList } = require('./waitingList'); // Import the saveWaitingList function
+const { sendEmailToZapier, sendRandomEmail } = require('./sendToZapier');
+const { saveWaitingList } = require('./waitingList');
+const templates  = require('./emailTemplates.js');
 
 const app = express();
 const PORT = 3000;
@@ -135,7 +136,8 @@ app.post('/sendGroupEmail', async (req, res) => {
      console.log('Received signups for group email:', signups);
     // Send email to each signup
     for (const signup of signups) {
-        sendEmailToZapier(signup);
+      console.log('Sending email to:', signup);
+        // sendEmailToZapier(signup);
     }
     res.json({ message: 'Emails sent successfully', data:req.body  });
   } catch (err) {
@@ -143,6 +145,36 @@ app.post('/sendGroupEmail', async (req, res) => {
   }
 });
 
+// SEND RANDOM GROUP EMAIL
+app.post('/sendRandomGroupEmail', async (req, res) => {
+  try {
+    const attendees = req.body;
+
+    // Assign a random template to each attendee
+    const payload = attendees.map(attendee => {
+      const template = templates[Math.floor(Math.random() * templates.length)];
+      return {
+        ...attendee,
+        ...template
+      };
+    });
+
+    console.log('Generated email payload:', payload); // Log for testing
+
+    // // Send each email via Zapier
+    for (const person of payload) {
+      await sendRandomEmail(person); // assumes this function handles Subject, L1, etc.
+    }
+
+    res.json({ message: 'Emails sent successfully', data: payload });
+  } catch (err) {
+    console.error('Error sending emails:', err);
+    res.status(500).json({ message: 'Failed to send emails' });
+  }
+
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

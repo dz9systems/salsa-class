@@ -4,9 +4,10 @@ body {
   background: #f7f7f7;
   margin: 0;
   padding: 20px;
-  background-image: url('assets/crunch-logo.png');
-  /* repeat */
-
+  /* background-image: url('assets/crunch-logo.png'); */
+  background-image: url('assets/49.png');
+ /* size */
+  background-size: 700px 700px;
 }
 
 .container {
