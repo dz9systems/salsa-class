@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "name": "Philippe Dela Cruz",
+    "email": "philippe.m.delacruz@gmail.com",
+    "role": "L",
+    "createdAt": "2025-05-12T15:59:19.044Z"
+  },
+  {
+    "name": "Hans",
+    "email": "plantabypedro@gmail.com",
+    "role": "F",
+    "createdAt": "2025-05-12T15:22:09.422Z"
+  },
+  {
+    "name": "Pedro",
+    "email": "serio.montoya@gmail.com",
+    "role": "F",
+    "createdAt": "2025-05-12T14:23:11.535Z"
+  },
+  {
+    "name": "Juliana Bronzati",
+    "email": "jubronzati@hotmail.com",
+    "role": "F",
+    "createdAt": "2025-05-12T14:16:38.876Z"
+  },
+  {
+    "name": "Steph",
+    "email": "steffi94501@yahoo.com",
+    "role": "F",
+    "createdAt": "2025-05-12T00:57:37.186Z"
+  },
+  {
+    "name": "Justin Yee",
+    "email": "smartphonesarecool@gmail.com",
+    "role": "L",
+    "createdAt": "2025-05-11T23:14:06.948Z"
+  },
+  {
+    "name": "Stephanie R Harris-Yee",
+    "email": "stevieharris554@gmail.com",
+    "role": "F",
+    "createdAt": "2025-05-11T23:13:33.138Z"
+  },
+  {
+    "name": "Terry Henry",
+    "email": "Lindseybug98@yahoo.com",
+    "role": "F",
+    "createdAt": "2025-05-11T22:04:17.381Z"
+  }
+]

@@ -102,8 +102,8 @@
     // Logic to update the button
     function updateButtonState(selectedRole) {
       const roleFull =
-        (selectedRole === 'L' && leaderCount >= 20) ||
-        (selectedRole === 'F' && followerCount >= 20);
+        (selectedRole === 'L' && leaderCount >= 15) ||
+        (selectedRole === 'F' && followerCount >= 15);
 
       const bothFull = leaderCount >= 20 && followerCount >= 20;
 
