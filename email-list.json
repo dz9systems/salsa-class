@@ -197,12 +197,6 @@
     "role": "L",
     "createdAt": "2025-04-16T14:00:25.000Z"
   },
-   {
-    "name": "Kristine Telmo",
-    "email": "keekay@yahoo.com",
-    "role": "F",
-    "createdAt": "2025-05-01T01:55:56.859Z"
-  },
   {
     "name": "Katrina Miles",
     "email": "trenniem1@gmail.com",
@@ -237,14 +231,14 @@
     "name": "Carolina Houyea",
     "email": "carol4882@hotmail.com",
     "role": "F",
-    "note":"Met on Wednesday at before subing for Kaya",
+    "note": "Met on Wednesday at before subing for Kaya",
     "createdAt": "2025-04-30T14:01:15.226Z"
   },
   {
     "name": "Fablela Short",
     "email": "frosadio30@hotmail.com",
     "role": "F",
-    "note":"Met on Wednesday at before subing for Kaya",
+    "note": "Met on Wednesday at before subing for Kaya",
     "createdAt": "2025-04-30T14:01:15.226Z"
   },
   {
@@ -282,79 +276,5 @@
     "email": "keekay@yahoo.com",
     "role": "F",
     "createdAt": "2025-05-01T01:55:56.859Z"
-  },
-  {
-    "name": "Katrina Miles",
-    "email": "trenniem1@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T21:45:36.192Z"
-  },
-  {
-    "name": "Elaine Jeng",
-    "email": "ihavetwopinkies@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T20:38:51.405Z"
-  },
-  {
-    "name": "Caroline Berk",
-    "email": "guiretcaroline@yahoo.com",
-    "role": "F",
-    "createdAt": "2025-04-30T17:09:50.680Z"
-  },
-  {
-    "name": "Terry Henry",
-    "email": "Lindseybug98@yahoo.com",
-    "role": "F",
-    "createdAt": "2025-04-30T17:02:40.303Z"
-  },
-  {
-    "name": "Jimmy",
-    "email": "jim3481@msn.com",
-    "role": "F",
-    "createdAt": "2025-04-30T14:03:13.080Z"
-  },
-  {
-    "name": "Carolina Houyea",
-    "email": "carol4882@hotmail.com",
-    "role": "F",
-    "note":"Met on Wednesday at before subing for Kaya",
-    "createdAt": "2025-04-30T14:01:15.226Z"
-  },
-  {
-    "name": "Fablela Short",
-    "email": "frosadio30@hotmail.com",
-    "role": "F",
-    "note":"Met on Wednesday at before subing for Kaya",
-    "createdAt": "2025-04-30T14:01:15.226Z"
-  },
-  {
-    "name": "Christine Le",
-    "email": "christinele24@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T03:05:58.147Z"
-  },
-  {
-    "name": "Yoyo",
-    "email": "yoyoho1220@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T03:04:51.451Z"
-  },
-  {
-    "name": "Edna Ochoa",
-    "email": "ednadrr@icloid.com",
-    "role": "F",
-    "createdAt": "2025-04-30T00:58:31.208Z"
-  },
-  {
-    "name": "Isabelle G Guerin",
-    "email": "andisa007@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T00:47:49.561Z"
-  },
-  {
-    "name": "Pedro",
-    "email": "serio.montoya@gmail.com",
-    "role": "F",
-    "createdAt": "2025-04-30T00:31:29.957Z"
   }
 ]
