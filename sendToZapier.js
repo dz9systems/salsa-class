@@ -7,7 +7,7 @@ dotenv.config();
 async function newSalsaClassUpdate(date,time,data) {
   console.log('Sending data to Zapier...', data);
   try {
-    const ZAP_SIGNUP_URL = 'https://hooks.zapier.com/hooks/catch/14130019/uh2d7sp/';
+    const ZAP_SIGNUP_URL = process.env.ZAP_NEW_SALSA_CLASS;
     const response = await axios.post(ZAP_SIGNUP_URL, {...data, time,date});
     console.log('✅ Successfully sent to Zapier:', response.data);
     return response.data;
