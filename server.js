@@ -5,7 +5,7 @@ const fs = require('fs/promises');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { saveSignup, getSignups } = require('./signup');
-const { sendEmailToZapier, sendRandomEmail } = require('./sendToZapier');
+const { sendEmailToZapier, sendRandomEmail, newSalsaClassUpdate } = require('./sendToZapier');
 const { saveWaitingList } = require('./waitingList');
 const templates  = require('./emailTemplates.js');
 
@@ -146,6 +146,22 @@ app.delete('/signups/:email', async (req, res) => {
 }
 );
 
+// ANNOUNCE UPCOMING SALSA CLASS
+app.post('/newSalsaClass', async (req, res) => {
+  try {
+     const {date,time,signups} = req.body;
+     console.log('Received signups for group email:', signups);
+    // Send email to each signup
+    for (const signup of signups) {
+      console.log('Sending email to:', signup);
+      newSalsaClassUpdate(date,time,signup);
+    }
+    res.json({ message: 'Emails sent successfully', data:req.body  });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to send emails'});
+  }
+});
+
 
 // SEND GROUP EMAIL TO ZAPIER
 app.post('/sendGroupEmail', async (req, res) => {
@@ -155,7 +171,7 @@ app.post('/sendGroupEmail', async (req, res) => {
     // Send email to each signup
     for (const signup of signups) {
       console.log('Sending email to:', signup);
-        // sendEmailToZapier(signup);
+      sendEmailToZapier(signup);
     }
     res.json({ message: 'Emails sent successfully', data:req.body  });
   } catch (err) {
